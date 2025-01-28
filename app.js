@@ -1,21 +1,31 @@
 const express = require("express");
 
 const app = express();
+app.set("views", "./src/views");
+app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: true }));
 
+let issues = [];
 
-app.use(express.static("src"));
 
 
 
 app.get('/', (req, res) => {
     console.log("redirect page home to issues");
-    res.redirect("pages/issues.html");
-})
+    //res.redirect("pages/issues.html");
+    res.render("issues", {issues});
+});
 
-app.get('/issues', (req, res) => {
-    console.log("redirect page issues");
-    res.redirect("pages/issues.html");
-})
+// app.get('/issues', (req, res) => {
+//     console.log("redirect page issues");
+//     res.redirect("pages/issues.html");
+// });
+
+app.post('/createIssue', (req, res) => {
+    console.log("creating new issue with form body ", req.body);
+    issues.push({title: req.body.title, author: req.body.author, description: req.body.description});
+    res.redirect("/");
+});
 
 
 

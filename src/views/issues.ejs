@@ -1,0 +1,44 @@
+<h1>Welcome to issues</h1>
+
+<h2>Liste des Issues</h2>
+<% if (issues.length > 0) { issues.forEach(element => { %>
+<div>
+    <h2><%=element.title%></h2>
+    <p><%=element.author%></p>
+    <p><%=element.description%></p>
+</div>
+<% }) } else { %>
+<p>Aucune Issues pour l'instant</p>
+<% } %>
+
+<h2>Créer une Issue</h2>
+<div>
+    <form action="createIssue" method="post">
+        <div>
+            <input
+                type="text"
+                name="title"
+                id="title"
+                placeholder="Titre de l'Issue"
+                required
+            />
+            <input
+                type="text"
+                name="author"
+                id="author"
+                placeholder="Votre nom"
+                required
+            />
+            <input
+                type="text"
+                name="description"
+                id="description"
+                placeholder="Description de l'Issue"
+                required
+            />
+        </div>
+        <div>
+            <button type="submit">Envoyer</button>
+        </div>
+    </form>
+</div>
