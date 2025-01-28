@@ -5,6 +5,8 @@
 <div>
     <h2><%=element.title%></h2>
     <p><%=element.author%></p>
+    <p><%=element.date_created%></p>
+    <p><%=element.status%></p>
     <p><%=element.description%></p>
 </div>
 <% }) } else { %>
@@ -27,6 +29,14 @@
                 name="author"
                 id="author"
                 placeholder="Votre nom"
+                required
+            />
+            <input type="date" name="date_created" id="date_created" required />
+            <input
+                type="text"
+                name="status"
+                id="status"
+                placeholder="Etat issue"
                 required
             />
             <input

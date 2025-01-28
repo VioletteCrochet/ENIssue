@@ -23,7 +23,11 @@ app.get('/', (req, res) => {
 
 app.post('/createIssue', (req, res) => {
     console.log("creating new issue with form body ", req.body);
-    issues.push({title: req.body.title, author: req.body.author, description: req.body.description});
+    issues.push({title: req.body.title, 
+        author: req.body.author, 
+        date_created: req.body.date_created, 
+        status: req.body.status, 
+        description: req.body.description});
     res.redirect("/");
 });
 
