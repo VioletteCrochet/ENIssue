@@ -35,7 +35,12 @@
           <div class="flex flex-wrap -m-12 flex-col items-center">
             <% if (issues.length > 0) { %> <% issues.forEach(function(issue) { %>
             <div class="p-12 md:w-1/2 align-center flex flex-col items-start">
-              <span class="inline-block py-1 px-2 rounded bg-indigo-50 text-indigo-500 text-xs font-medium tracking-widest">CATEGORY</span>
+              <% if (issue.status === "open") { %>
+              <span class="inline-block py-1 px-2 rounded bg-red-50 text-red-500 text-xs font-medium tracking-widest">non résolu</span>
+              <% }; %>
+              <% if (issue.status === "solved") { %>
+              <span class="inline-block py-1 px-2 rounded bg-green-50 text-green-500 text-xs font-medium tracking-widest">résolu</span>
+              <% }; %>
               <h2 class="sm:text-3xl text-2xl title-font font-medium text-gray-900 mt-4 mb-4"><%= issue.title %></h2>
               <p class="leading-relaxed mb-8"><%= issue.description %></p>
               <div class="flex items-center flex-wrap pb-4 mb-4 border-b-2 border-gray-100 mt-auto w-full">
@@ -61,6 +66,7 @@
                 <img alt="blog" src="https://dummyimage.com/104x104" class="w-12 h-12 rounded-full flex-shrink-0 object-cover object-center">
                 <span class="flex-grow flex flex-col pl-4">
                   <span class="title-font font-medium text-gray-900"><%= issue.author %></span>
+                  <span class="text-gray-400 text-xs tracking-widest mt-0.5"><%= issue.date %></span>
                 </span>
               </a>
             </div>

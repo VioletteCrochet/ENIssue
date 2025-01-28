@@ -748,11 +748,17 @@
   .bg-gray-100 {
     background-color: var(--color-gray-100);
   }
+  .bg-green-50 {
+    background-color: var(--color-green-50);
+  }
   .bg-indigo-50 {
     background-color: var(--color-indigo-50);
   }
   .bg-indigo-500 {
     background-color: var(--color-indigo-500);
+  }
+  .bg-red-50 {
+    background-color: var(--color-red-50);
   }
   .bg-white {
     background-color: var(--color-white);
@@ -882,8 +888,14 @@
   .text-gray-900 {
     color: var(--color-gray-900);
   }
+  .text-green-500 {
+    color: var(--color-green-500);
+  }
   .text-indigo-500 {
     color: var(--color-indigo-500);
+  }
+  .text-red-500 {
+    color: var(--color-red-500);
   }
   .text-white {
     color: var(--color-white);
