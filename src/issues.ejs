@@ -16,7 +16,7 @@
             <span class="ml-3 text-xl">Tailblocks</span>
           </a>
           <nav class="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-400	flex flex-wrap items-center text-base justify-center">
-            <a class="mr-5 hover:text-gray-900">First Link</a>
+            <a href="/formIssue" class="mr-5 hover:text-gray-900">poser une question</a>
             <a class="mr-5 hover:text-gray-900">Second Link</a>
             <a class="mr-5 hover:text-gray-900">Third Link</a>
             <a class="mr-5 hover:text-gray-900">Fourth Link</a>
@@ -30,12 +30,14 @@
       </header>
 
     <section class="text-gray-600 body-font overflow-hidden">
+      
         <div class="container px-5 py-24 mx-auto ">
           <div class="flex flex-wrap -m-12 flex-col items-center">
+            <% if (issues.length > 0) { %> <% issues.forEach(function(issue) { %>
             <div class="p-12 md:w-1/2 align-center flex flex-col items-start">
               <span class="inline-block py-1 px-2 rounded bg-indigo-50 text-indigo-500 text-xs font-medium tracking-widest">CATEGORY</span>
-              <h2 class="sm:text-3xl text-2xl title-font font-medium text-gray-900 mt-4 mb-4">Comment optimiser un site web pour un affichage rapide en utilisant Flexbox et Tailwind CSS ?</h2>
-              <p class="leading-relaxed mb-8">Je construis un site web avec Tailwind CSS et Flexbox. J'ai deux sections dans une div qui s'affichent côte à côte sur grand écran grâce à flex-row. Je veux qu'elles s'affichent l'une sous l'autre sur les petits écrans, mais qu'elles restent parfaitement alignées et centrées. J'ai essayé flex-col avec items-center, mais l'affichage n'est pas encore parfait. Des idées sur la meilleure configuration pour ce cas d'utilisation ?</p>
+              <h2 class="sm:text-3xl text-2xl title-font font-medium text-gray-900 mt-4 mb-4"><%= issue.title %></h2>
+              <p class="leading-relaxed mb-8"><%= issue.description %></p>
               <div class="flex items-center flex-wrap pb-4 mb-4 border-b-2 border-gray-100 mt-auto w-full">
                 <a class="text-indigo-500 inline-flex items-center">Learn More
                   <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -58,42 +60,12 @@
               <a class="inline-flex items-center">
                 <img alt="blog" src="https://dummyimage.com/104x104" class="w-12 h-12 rounded-full flex-shrink-0 object-cover object-center">
                 <span class="flex-grow flex flex-col pl-4">
-                  <span class="title-font font-medium text-gray-900">Amélie Florent</span>
-                  <span class="text-gray-400 text-xs tracking-widest mt-0.5">Developpeuse web</span>
+                  <span class="title-font font-medium text-gray-900"><%= issue.author %></span>
                 </span>
               </a>
             </div>
-            <div class="p-12 md:w-1/2 align-center flex-col items-start">
-              <span class="inline-block py-1 px-2 rounded bg-indigo-50 text-indigo-500 text-xs font-medium tracking-widest">CATEGORY</span>
-              <h2 class="sm:text-3xl text-2xl title-font font-medium text-gray-900 mt-4 mb-4">Comment structurer une section de blog avec des cartes dynamiques en Tailwind CSS ?</h2>
-              <p class="leading-relaxed mb-8">Je travaille sur une section de blog où chaque article est représenté par une carte (titre, image, description). Je souhaite afficher ces cartes dans une grille responsive avec Tailwind CSS, mais sans que l'affichage ne se casse sur des tailles d'écran intermédiaires. Existe-t-il des bonnes pratiques ou combinaisons de classes Tailwind pour un rendu propre et fluide sur tous les écrans ?</p>
-              <div class="flex items-center flex-wrap pb-4 mb-4 border-b-2 border-gray-100 mt-auto w-full">
-                <a class="text-indigo-500 inline-flex items-center">Learn More
-                  <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 12h14"></path>
-                    <path d="M12 5l7 7-7 7"></path>
-                  </svg>
-                </a>
-                <span class="text-gray-400 mr-3 inline-flex items-center ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-200">
-                  <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                    <circle cx="12" cy="12" r="3"></circle>
-                  </svg>1.2K
-                </span>
-                <span class="text-gray-400 inline-flex items-center leading-none text-sm">
-                  <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                    <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path>
-                  </svg>6
-                </span>
-              </div>
-              <a class="inline-flex items-center">
-                <img alt="blog" src="https://dummyimage.com/103x103" class="w-12 h-12 rounded-full flex-shrink-0 object-cover object-center">
-                <span class="flex-grow flex flex-col pl-4">
-                  <span class="title-font font-medium text-gray-900">Paul Perrot</span>
-                  <span class="text-gray-400 text-xs tracking-widest mt-0.5">Developpeur web</span>
-                </span>
-              </a>
-            </div>
+            <% }); %>
+            <% } %>
           </div>
         </div>
     </section>
