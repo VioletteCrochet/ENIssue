@@ -10,7 +10,7 @@
   "description": "eni issue sharing app",
   "main": "app.js",
   "scripts": {
-    "tailwind": "npx @tailwindcss/cli -i ./src/css/styles-post-tailwind.css -o ./src/css/syles.css --watch",
+    "tailwind": "npx @tailwindcss/cli -i ./src/css/styles-post-tailwind.css -o ./src/css/styles.css --watch",
     "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
