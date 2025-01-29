@@ -1,0 +1,22 @@
+{
+  "issues": [
+    {
+      "_id": { "$oid": "679a3c3e533b6d3d07917884" },
+      "id": { "$numberInt": "1" },
+      "title": "Comment optimiser un site web pour un affichage rapide en utilisant Flexbox et Tailwind CSS ?",
+      "date": "29/01/2025 15:34:12",
+      "status": "open",
+      "author": "Amélie Florent",
+      "description": "Je construis un site web avec Tailwind CSS et Flexbox. J'ai deux sections dans une div qui s'affichent côte à côte sur grand écran grâce à flex-row. Je veux qu'elles s'affichent l'une sous l'autre sur les petits écrans, mais qu'elles restent parfaitement alignées et centrées. J'ai essayé flex-col avec items-center, mais l'affichage n'est pas encore parfait. Des idées sur la meilleure configuration pour ce cas d'utilisation ?"
+    },
+    {
+      "_id": { "$oid": "679a3e48533b6d3d07917887" },
+      "id": 2,
+      "title": "Comment structurer une section de blog avec des cartes dynamiques en Tailwind CSS ?",
+      "date": "28/01/2025 15:35:12",
+      "status": "solved",
+      "author": "Paul Perrot",
+      "description": "Je travaille sur une section de blog où chaque article est représenté par une carte (titre, image, description). Je souhaite afficher ces cartes dans une grille responsive avec Tailwind CSS, mais sans que l'affichage ne se casse sur des tailles d'écran intermédiaires. Existe-t-il des bonnes pratiques ou combinaisons de classes Tailwind pour un rendu propre et fluide sur tous les écrans ?"
+    }
+  ]
+}

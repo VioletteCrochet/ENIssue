@@ -1,1 +1,30 @@
 @import "tailwindcss";
+body {
+    font-family: Consolas, monospace;
+}
+
+.wrapper {
+    /*This part is important for centering*/
+    display: grid;
+    place-items: center;
+  }
+  
+  .title {
+    width: 14ch;
+    animation: typing 1200ms steps(14), blink .5s step-end infinite alternate;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid;
+  }
+  
+  @keyframes typing {
+    from {
+      width: 0
+    }
+  }
+      
+  @keyframes blink {
+    50% {
+      border-color: transparent
+    }
+  }
