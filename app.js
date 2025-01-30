@@ -2,10 +2,13 @@
 const mongoose = require('mongoose');
 const Issue = require('./src/model/Issue');
 const express = require("express");
+const readlineSync = require('readline-sync');
 
 // #### SETUP
 // MONGOOSE, MONGODB ATLAS
-mongoose.connect("mongodb+srv://yoannbattu2024:FmusTcjh!@clusteryoanneni.8oqrw.mongodb.net/ENIIssues?retryWrites=true&w=majority&appName=ClusterYoannENI")
+const pwd = readlineSync.question("Enter MongoDB Atlas Password: ", {hideEchoBack: true, mask: ''});
+mongoose.connect("mongodb+srv://yoannbattu2024:"+pwd+"@clusteryoanneni.8oqrw.mongodb.net/ENIIssues?retryWrites=true&w=majority&appName=ClusterYoannENI");
+console.log("Running server...");
 
 // EXPRESS SETUP
 const app = express();
@@ -20,7 +23,7 @@ let issues = [];
 let detailedIssue;
 
 // Home (readAll), Errors
-initHome = (req, res) => {
+let initHome = (req, res) => {
     console.log("redirect page home to issues");
     const query = Issue.find({});
     query.then((qRes) => {
