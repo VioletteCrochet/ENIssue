@@ -1,22 +1,26 @@
+// #### IMPORTS
 const mongoose = require('mongoose');
 const Issue = require('./src/model/Issue');
 const express = require("express");
 
+// #### SETUP
+// MONGOOSE, MONGODB ATLAS
 mongoose.connect("mongodb+srv://yoannbattu2024:FmusTcjh!@clusteryoanneni.8oqrw.mongodb.net/ENIIssues?retryWrites=true&w=majority&appName=ClusterYoannENI")
 
-
+// EXPRESS SETUP
 const app = express();
 app.set("views", "./src/views"); // put the folder path here
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
+app.listen(3000);
 
-
-
-
+// #### MAIN
+// global vars
 let issues = [];
-let currentId = 1;
+let detailedIssue;
 
-app.get("/", (req, res) => {
+// Home (readAll), Errors
+initHome = (req, res) => {
     console.log("redirect page home to issues");
     const query = Issue.find({});
     query.then((qRes) => {
@@ -25,24 +29,34 @@ app.get("/", (req, res) => {
         issues = qRes;
         res.render("issues", {issues});
     })
+}
+app.get("/", initHome);
+
+app.get('/testError', (req, res, next) => {throw new Error("test error");});
+
+app.use((err, req, res, next) => {
+    console.log(err.stack);
+    res.status(500).render("error", {
+        titre: "erreur interne",
+        erreur: err,
+    });
 });
 
+// CRUD
 app.post("/createIssue", (req, res) => {
     console.log("creating new issue with form body ", req.body);
     const message = new Issue({
-        'id': currentId, 
         'title': req.body.title, 
         'author': req.body.author, 
         'date_created': new Date(), 
         'status': "Ouverte", 
         'description': req.body.description, 
+        'comments': [], 
     })
-    currentId += 1;
     message.save().then(() => {
         console.log("- DB - - - create issue then");
         res.status(201).redirect("/")
     });
-    // res.redirect("/");
 });
 
 app.post("/updateIssue/", (req, res) => {
@@ -68,19 +82,24 @@ app.get("/deleteIssue/:id", (req, res) => {
     })
 })
 
-app.get('/testError', (req, res, next) => {
-    throw new Error("test error");
-});
 
-app.use((err, req, res, next) => {
-    console.log(err.stack);
-    res.status(500).render("error", {
-        titre: "erreur interne",
-        erreur: err,
-    });
-});
+app.get("/issue/:id", (req, res) => {
+    console.log("accessing details of issue ", req.params.id);
+    const query = Issue.findById(req.params.id);
+    query.then((qRes) => {
+        console.log("- DB - - - issue by id then");
+        console.log(qRes);
+        detailedIssue = qRes;
+        res.render("detailedIssue", {detailedIssue});
+    })
+})
 
-app.listen(3000);
+// show details of the issue
+// show comments
+// text box to write comments and send
+
+
+// #### storage
 
 // req.query pour dico de query params
 // req.body
