@@ -1,46 +1,156 @@
-<h1>Welcome to issues</h1>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ENI Issues with Cat!</title>
+        <style>
+            body {
+                height: 100vh;
+                margin: 0;
+                overflow: hidden;
+                background-color: #f0f0f0;
+            }
+            #canvas {
+                position: absolute;
+                pointer-events: none; /* Prevents interference with mouse interactions */
+                top: 0;
+                left: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="canvas"></canvas>
 
-<h2>Liste des Issues</h2>
-<% if (issues.length > 0) { issues.forEach(element => { %>
-<div>
-    <h2><%=element.title%></h2>
-    <p><%=element.author%></p>
-    <p><%=element.date_created%></p>
-    <p><%=element.status%></p>
-    <p><%=element.description%></p>
-</div>
-<% }) } else { %>
-<p>Aucune Issues pour l'instant</p>
-<% } %>
+        <script>
+            const canvas = document.getElementById("canvas");
+            const ctx = canvas.getContext("2d");
 
-<h2>Créer une Issue</h2>
-<div>
-    <form action="createIssue" method="post">
+            const spriteSheet = new Image();
+            spriteSheet.src =
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZZ5YXO89etxgNNqmk-Fz0S6hYhCy7MdFFKQ&s"; // Replace with your sprite sheet URL
+
+            const frameWidth = 111; // Width of each frame in the sprite sheet
+            const frameHeight = 56; // Height of each frame in the sprite sheet
+            const totalFrames = 8; // Total number of frames in the sprite sheet
+            let currentFrame = 0;
+            let mouseX = 0;
+            let mouseY = 0;
+
+            // Set canvas size
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            // Update mouse position on mousemove
+            document.addEventListener("mousemove", (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
+            // Time-based frame delay (in milliseconds)
+            const frameDelay = 100; // 100ms between frames, you can adjust this for a slower/faster animation
+            let lastFrameTime = 0;
+
+            // Variables to control the trailing effect
+            let catX = mouseX;
+            let catY = mouseY;
+            const trailingSpeed = 0.01; // Control how fast the cat "catches up" with the cursor
+
+            // Function to cycle through the sprite sheet and animate the cat
+            function animateCat(timestamp) {
+                // Calculate time elapsed since the last frame
+                if (timestamp - lastFrameTime >= frameDelay) {
+                    // Time for the next frame, so update the frame
+                    currentFrame = (currentFrame + 1) % totalFrames;
+                    lastFrameTime = timestamp;
+                }
+
+                // Calculate the distance to move the cat to simulate trailing effect
+                const dx = mouseX - catX;
+                const dy = mouseY - catY;
+
+                // Move the cat a little closer to the mouse each frame
+                catX += dx * trailingSpeed;
+                catY += dy * trailingSpeed;
+
+                // Draw the current frame from the sprite sheet
+                ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas on each frame
+                ctx.drawImage(
+                    spriteSheet,
+                    (currentFrame % 2) * frameWidth, // Adjust x coordinate (column)
+                    Math.floor(currentFrame / 2) * frameHeight, // Adjust y coordinate (row)
+                    frameWidth,
+                    frameHeight, // Frame dimensions
+                    catX - frameWidth / 2,
+                    catY - frameHeight / 2, // Position on screen (centered on cat position)
+                    frameWidth,
+                    frameHeight // Draw the frame at this size
+                );
+
+                // Request the next frame of the animation
+                requestAnimationFrame(animateCat);
+            }
+
+            // Start animation loop once the sprite sheet is loaded
+            spriteSheet.onload = () => {
+                animateCat(0); // Start the animation loop
+            };
+        </script>
+
+        <h1>Welcome to issues</h1>
+
+        <h2>Liste des Issues</h2>
+        <% if (issues.length > 0) { issues.forEach(element => { %>
         <div>
-            <input
-                type="text"
-                name="title"
-                id="title"
-                placeholder="Titre de l'Issue"
-                required
-            />
-            <input
-                type="text"
-                name="author"
-                id="author"
-                placeholder="Votre nom"
-                required
-            />
-            <input
-                type="text"
-                name="description"
-                id="description"
-                placeholder="Description de l'Issue"
-                required
-            />
+            <div>
+                <h2><%=element.title%></h2>
+                <p>Issue n°<%=element.id%> - <b><%=element.author%></b> - <%=element.date_created%></p>
+                <p><i><%=element.status%></i></p>
+                <p><%=element.description%></p>
+            </div>
+            <div>
+                <button type="submit"><a href="<%="updateIssue/"+element.id%>">Modifier</a></button>
+                <button type="submit"><a href="<%="deleteIssue/"+element.id%>">Supprimer</a></button>
+            </div>
         </div>
+        <% }) } else { %>
+        <p>Aucune Issues pour l'instant</p>
+        <% } %>
+
+        <h2>Créer une Issue</h2>
         <div>
-            <button type="submit">Envoyer</button>
+            <form action="createIssue" method="post">
+                <div>
+                    <input
+                        type="text"
+                        name="title"
+                        id="title"
+                        placeholder="Titre de l'Issue"
+                        required
+                    />
+                    <input
+                        type="text"
+                        name="author"
+                        id="author"
+                        placeholder="Votre nom"
+                        required
+                    />
+                    <input
+                        type="text"
+                        name="description"
+                        id="description"
+                        placeholder="Description de l'Issue"
+                        required
+                    />
+                </div>
+                <div>
+                    <button type="submit">Envoyer</button>
+                </div>
+            </form>
         </div>
-    </form>
-</div>
+
+        <button type="submit">
+            <a href="/testError">Test the error page</a>
+        </button>
+    </body>
+</html>
