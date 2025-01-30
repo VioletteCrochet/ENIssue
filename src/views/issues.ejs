@@ -3,12 +3,12 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>ENI Issues with Cat!</title>
+        <title>ENI Issues, with Cat!</title>
         <style>
             body {
                 height: 100vh;
                 margin: 20;
-                background-color: #f0f0f0;
+                background-color: #f0f0f0de;
             }
             #canvas {
                 position: absolute;
@@ -18,7 +18,7 @@
             }
         </style>
     </head>
-    <body>
+    <body style="cursor: url(https://cdn.custom-cursor.com/db/cursor/32/Laser_Cursor.png) , default !important">
         <canvas id="canvas"></canvas>
 
         <script>
@@ -46,7 +46,6 @@
                 mouseY = e.clientY;
             });
 
-            // Time-based frame delay (in milliseconds)
             const frameRate = 20;
             const frameDelay = (1000/frameRate); // 1sec/framerate, need to be in ms
             let lastFrameTime = 0;
@@ -57,6 +56,8 @@
             //const trailingSpeed = 0.02; // Control how fast the cat "catches up" with the cursor
             const movementSpeed = 30*frameRate; // pixel/sec, multiple of 30speed for 1000ms for feet placement
             const distFrame = movementSpeed*(frameDelay/1000);
+
+            let direction = 1; // 1 for right, -1 for left
 
             // Function to cycle through the sprite sheet and animate the cat
             function animateCat(timestamp) {
@@ -81,19 +82,55 @@
                         // catX += dx * trailingSpeed;
                         // catY += dy * trailingSpeed;
 
-                        // Draw the current frame from the sprite sheet
-                        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas on each frame
-                        ctx.drawImage(
-                            spriteSheet,
-                            (currentFrame % 2) * frameWidth, // Adjust x coordinate (column)
-                            Math.floor(currentFrame / 2) * frameHeight, // Adjust y coordinate (row)
-                            frameWidth,
-                            frameHeight, // Frame dimensions
-                            catX - frameWidth / 2,
-                            catY - frameHeight / 2, // Position on screen (centered on cat position)
-                            frameWidth,
-                            frameHeight // Draw the frame at this size
-                        );
+                        // Check if the cat should change direction
+                        direction = (dx < 0) ? -1 : 1;
+
+                        // Clear the canvas on each frame
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                        // Draw the current frame from the sprite sheet with flipping logic
+                        // Save the current canvas state before applying transformations
+                        ctx.save();
+
+                        // Translate to the cat's position
+                        ctx.translate(catX, catY);
+
+                        // Apply rotation (optional)
+                        let rotationAngle = Math.atan2(dy_norm, dx_norm); // Calculate the rotation angle based on movement
+
+                        // Adjust the drawing position so the cat sprite rotates around its center
+                        if (direction === -1) {
+                            ctx.rotate(rotationAngle + 3.14); // Apply rotation + pi
+                            // Flip the sprite horizontally if moving left
+                            ctx.scale(-1, 1); 
+                            ctx.drawImage(
+                                spriteSheet,
+                                (currentFrame % 2) * frameWidth, // Adjust x coordinate (column)
+                                Math.floor(currentFrame / 2) * frameHeight, // Adjust y coordinate (row)
+                                frameWidth,
+                                frameHeight, // Frame dimensions
+                                -(frameWidth / 2), // Position centered on the cat
+                                -(frameHeight / 2), // Position centered on the cat
+                                frameWidth,
+                                frameHeight // Draw the frame at this size
+                            );
+                        } else {
+                            // Normal drawing for moving right
+                            ctx.rotate(rotationAngle); // Apply rotation
+                            ctx.drawImage(
+                                spriteSheet,
+                                (currentFrame % 2) * frameWidth, // Adjust x coordinate (column)
+                                Math.floor(currentFrame / 2) * frameHeight, // Adjust y coordinate (row)
+                                frameWidth,
+                                frameHeight, // Frame dimensions
+                                -(frameWidth / 2), // Position centered on the cat
+                                -(frameHeight / 2), // Position centered on the cat
+                                frameWidth,
+                                frameHeight // Draw the frame at this size
+                            );
+                        }
+
+                        ctx.restore();
                     }
                 }
                 // Request the next frame of the animation
