@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Issue = require('./src/model/Issue');
 const express = require("express");
 
-mongoose.connect("mongodb+srv://yoannbattu2024:FmusTcjh!@clusteryoanneni.8oqrw.mongodb.net/?retryWrites=true&w=majority&appName=ClusterYoannENI")
+mongoose.connect("mongodb+srv://yoannbattu2024:FmusTcjh!@clusteryoanneni.8oqrw.mongodb.net/ENIIssues?retryWrites=true&w=majority&appName=ClusterYoannENI")
 
 
 const app = express();
@@ -14,12 +14,17 @@ app.use(express.urlencoded({ extended: true }));
 
 
 let issues = [];
-// let issues;
 let currentId = 1;
 
 app.get("/", (req, res) => {
     console.log("redirect page home to issues");
-    res.render("issues", { issues });
+    const query = Issue.find({});
+    query.then((qRes) => {
+        console.log("- DB - - - homepage load then");
+        //console.log(qRes);
+        issues = qRes;
+        res.render("issues", {issues});
+    })
 });
 
 app.post("/createIssue", (req, res) => {
@@ -32,25 +37,35 @@ app.post("/createIssue", (req, res) => {
         'status': "Ouverte", 
         'description': req.body.description, 
     })
-    issues.push({
-        id: currentId, 
-        title: req.body.title,
-        author: req.body.author,
-        date_created: new Date(),
-        status: "Ouverte",
-        description: req.body.description,
-    });
     currentId += 1;
-    message.save().then(res.status(201).redirect("/"));
+    message.save().then(() => {
+        console.log("- DB - - - create issue then");
+        res.status(201).redirect("/")
+    });
     // res.redirect("/");
 });
 
-app.get("/updateIssue/:id", (req, res) => {
-    
+app.post("/updateIssue/", (req, res) => {
+    console.log("updating issue with form body ", req.body);
+    const update = {
+        title: req.body.title, 
+        author: req.body.author,  
+        description: req.body.description, 
+    };
+    const query = Issue.findByIdAndUpdate(req.body.issueId, update);
+    query.then(() => {
+        console.log("- DB - - - update issue then");
+        res.status(201).redirect("/");
+    })
 });
 
 app.get("/deleteIssue/:id", (req, res) => {
-
+    console.log("delete issue ", req.params.id);
+    const query = Issue.findByIdAndDelete(req.params.id);
+    query.then(qRes => {
+        console.log("- DB - - - delete issue then");
+        res.status(201).redirect("/");
+    })
 })
 
 app.get('/testError', (req, res, next) => {

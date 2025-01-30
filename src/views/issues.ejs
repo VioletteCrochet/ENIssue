@@ -7,8 +7,7 @@
         <style>
             body {
                 height: 100vh;
-                margin: 0;
-                overflow: hidden;
+                margin: 20;
                 background-color: #f0f0f0;
             }
             #canvas {
@@ -54,7 +53,7 @@
             // Variables to control the trailing effect
             let catX = mouseX;
             let catY = mouseY;
-            const trailingSpeed = 0.01; // Control how fast the cat "catches up" with the cursor
+            const trailingSpeed = 0.02; // Control how fast the cat "catches up" with the cursor
 
             // Function to cycle through the sprite sheet and animate the cat
             function animateCat(timestamp) {
@@ -100,22 +99,81 @@
         <h1>Welcome to issues</h1>
 
         <h2>Liste des Issues</h2>
-        <% if (issues.length > 0) { issues.forEach(element => { %>
-        <div>
-            <div>
-                <h2><%=element.title%></h2>
-                <p>Issue n°<%=element.id%> - <b><%=element.author%></b> - <%=element.date_created%></p>
-                <p><i><%=element.status%></i></p>
-                <p><%=element.description%></p>
-            </div>
-            <div>
-                <button type="submit"><a href="<%="updateIssue/"+element.id%>">Modifier</a></button>
-                <button type="submit"><a href="<%="deleteIssue/"+element.id%>">Supprimer</a></button>
-            </div>
-        </div>
-        <% }) } else { %>
+
+        <% if (issues.length > 0) { %>
+        <table style="border:10px solid black">
+            <tr>
+                <th style="border:5px dotted blue">Liste des Issues</th>
+                <th style="border:5px dotted blue">Edition</th>
+            </tr>
+            <% issues.forEach(element => { %>
+            <tr>
+                <td style="border:3px dotted green">
+                    <div>
+                        <div>
+                            <h2><%=element.title%></h2>
+                            <p><b><%=element.author%></b></p>
+                            <p>
+                                Issue n°<i><%=element._id%></i> -
+                                <i><%=element.date_created%></i>
+                            </p>
+                            <p><i><%=element.status%></i></p>
+                            <p><%=element.description%></p>
+                        </div>
+                        <div>
+                            <button type="submit">
+                                <a href= <%="deleteIssue/"+element._id%> >Supprimer</a>
+                            </button>
+                        </div>
+                    </div>
+                </td>
+                <td style="border:3px dotted green">
+                    <div>
+                        <form action="updateIssue" method="post">
+                            <div>
+                                <input
+                                    name="issueId"
+                                    value="<%=element._id%>"
+                                    hidden
+                                />
+                            </div>
+                            <div>
+                                <input
+                                    type="text"
+                                    name="title"
+                                    id="title"
+                                    placeholder="<%=element.title%>"
+                                    required
+                                />
+                                <input
+                                    type="text"
+                                    name="author"
+                                    id="author"
+                                    placeholder="<%=element.author%>"
+                                    required
+                                />
+                                <input
+                                    type="text"
+                                    name="description"
+                                    id="description"
+                                    placeholder="<%=element.description%>"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <button type="submit">Modifier</button>
+                            </div>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <% })%>
+        </table>
+        <% } else { %>
         <p>Aucune Issues pour l'instant</p>
         <% } %>
+
+        <br />
 
         <h2>Créer une Issue</h2>
         <div>
@@ -148,6 +206,8 @@
                 </div>
             </form>
         </div>
+
+        <br />
 
         <button type="submit">
             <a href="/testError">Test the error page</a>
