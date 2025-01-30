@@ -1,3 +1,58 @@
-<h1>Issue details</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails Issue</title>
+    <style>
+        body {
+            height: 100vh;
+            margin: 20;
+            background-color: #d89f9fde;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div>
+            <a href="/">Retour Menu</a>
+        </div>
+        <div>
+            <h1> <%=detailedIssue.title%> </h1>
 
-<h2>coucou</h2>
+            <p><i> ID : <%=detailedIssue._id%> </i></p>
+            <p><b> Auteur : <%=detailedIssue.author%> </b></p>
+            <p><i> Créée le : <%=detailedIssue.date_created%> </i></p>
+            <p><i> Statut : <%=detailedIssue.status%> </i></p>
+
+            <p> <%=detailedIssue.description%> </p>
+        </div>
+        <div>
+            <table style="border:10px solid black">
+                <tr>
+                    <th style="border:5px dotted blue">Commentaires</th>
+                </tr>
+                <% if (detailedIssue.comments.length > 0){ detailedIssue.comments.forEach(elem => {%>
+                <tr>
+                    <td style="border:3px dotted green">
+                        <p><b> <%=elem.com_author%> </b></p>
+                        <p><i> <%=elem.com_date%> </i></p>
+                        <p> <%=elem.com_message%> </p>
+                    </td>
+                </tr>
+                <% }); } else {%>
+                    <tr><td><p>Pas de commentaires</p></td></tr>
+                <% } %>
+                <tr><td>
+                <form action="/addComment" method="post">
+                    <input hidden name="issue_id" value="<%=detailedIssue._id%>" >
+                    <input type="text" name="com_author" placeholder="Auteur du commentaire">
+                    <input type="text" name="com_message" placeholder="Message">
+                    <button type="submit">Envoyer</button>
+                </form>
+                </td></tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

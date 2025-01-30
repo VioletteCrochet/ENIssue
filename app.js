@@ -97,7 +97,36 @@ app.get("/issue/:id", (req, res) => {
     })
 })
 
-// show details of the issue
+// #### COMMENTS
+app.post("/addComment", (req, res) => {
+    console.log("adding comment ", req.body);
+    const query = Issue.findById(req.body.issue_id);
+    query.then((qRes) => {
+        console.log("- DB - - - add comment first query");
+        const issue = qRes;
+        issue.comments.push({
+            com_author: req.body.com_author, 
+            com_date: new Date(), 
+            com_message: req.body.com_message
+        });
+        // console.log(issue);
+        const update = {
+            comments: issue.comments
+        }
+        Issue.findByIdAndUpdate(req.body.issue_id, update).then(elem => {
+            console.log("- DB - - - add comment second query");
+            res.status(201).redirect("/issue/"+req.body.issue_id);
+        });
+    });
+    // find by id update
+    // res redirect issue/_id
+    // res.redirect("/");
+})
+
+
+
+
+
 // show comments
 // text box to write comments and send
 
