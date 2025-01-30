@@ -47,13 +47,16 @@
             });
 
             // Time-based frame delay (in milliseconds)
-            const frameDelay = 100; // 100ms between frames, you can adjust this for a slower/faster animation
+            const frameRate = 20;
+            const frameDelay = (1000/frameRate); // 1sec/framerate, need to be in ms
             let lastFrameTime = 0;
 
             // Variables to control the trailing effect
             let catX = mouseX;
             let catY = mouseY;
-            const trailingSpeed = 0.02; // Control how fast the cat "catches up" with the cursor
+            //const trailingSpeed = 0.02; // Control how fast the cat "catches up" with the cursor
+            const movementSpeed = 30*frameRate; // pixel/sec, multiple of 30speed for 1000ms for feet placement
+            const distFrame = movementSpeed*(frameDelay/1000);
 
             // Function to cycle through the sprite sheet and animate the cat
             function animateCat(timestamp) {
@@ -62,36 +65,44 @@
                     // Time for the next frame, so update the frame
                     currentFrame = (currentFrame + 1) % totalFrames;
                     lastFrameTime = timestamp;
+
+                    const dx = mouseX - catX;
+                    const dy = mouseY - catY;
+
+                    // fixed speed movement
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    if (dist > 50){
+                        const dx_norm = dx/dist;
+                        const dy_norm = dy/dist;
+                        catX += dx_norm * distFrame;
+                        catY += dy_norm * distFrame;
+
+                        // trailing type movement
+                        // catX += dx * trailingSpeed;
+                        // catY += dy * trailingSpeed;
+
+                        // Draw the current frame from the sprite sheet
+                        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas on each frame
+                        ctx.drawImage(
+                            spriteSheet,
+                            (currentFrame % 2) * frameWidth, // Adjust x coordinate (column)
+                            Math.floor(currentFrame / 2) * frameHeight, // Adjust y coordinate (row)
+                            frameWidth,
+                            frameHeight, // Frame dimensions
+                            catX - frameWidth / 2,
+                            catY - frameHeight / 2, // Position on screen (centered on cat position)
+                            frameWidth,
+                            frameHeight // Draw the frame at this size
+                        );
+                    }
                 }
-
-                // Calculate the distance to move the cat to simulate trailing effect
-                const dx = mouseX - catX;
-                const dy = mouseY - catY;
-
-                // Move the cat a little closer to the mouse each frame
-                catX += dx * trailingSpeed;
-                catY += dy * trailingSpeed;
-
-                // Draw the current frame from the sprite sheet
-                ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas on each frame
-                ctx.drawImage(
-                    spriteSheet,
-                    (currentFrame % 2) * frameWidth, // Adjust x coordinate (column)
-                    Math.floor(currentFrame / 2) * frameHeight, // Adjust y coordinate (row)
-                    frameWidth,
-                    frameHeight, // Frame dimensions
-                    catX - frameWidth / 2,
-                    catY - frameHeight / 2, // Position on screen (centered on cat position)
-                    frameWidth,
-                    frameHeight // Draw the frame at this size
-                );
-
                 // Request the next frame of the animation
                 requestAnimationFrame(animateCat);
             }
 
             // Start animation loop once the sprite sheet is loaded
             spriteSheet.onload = () => {
+                console.log("sprite loaded");
                 animateCat(0); // Start the animation loop
             };
         </script>
